@@ -1,0 +1,11 @@
+Client/Library/
+Client/Logs/
+Client/Packages/
+Client/Temp/
+Client/.vs/
+Client/Assets/xLua/
+Client/Assets/Bitgem/
+Client/Bin/
+Client/.vsconfig
+Client/Assembly-CSharp-Editor.csproj
+Client/Assembly-CSharp.csproj
