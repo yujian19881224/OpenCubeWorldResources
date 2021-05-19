@@ -6,7 +6,7 @@ excel loaded Assets/Mods/X/Common/Config/Localization.xlsx
 load excel Assets/Mods/X/Common/Config/Objects.xlsx
 sheet Objects
 column count = 19
-data count = 12
+data count = 14
 excel loaded Assets/Mods/X/Common/Config/Objects.xlsx
 load excel Assets/Mods/X/Common/Config/Units.xlsx
 sheet Units
