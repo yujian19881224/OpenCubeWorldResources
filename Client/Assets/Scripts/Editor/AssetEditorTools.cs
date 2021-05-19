@@ -242,26 +242,26 @@ namespace X
         }
 
 
-        [MenuItem( "XAssets/CreateCollider" )]
-        static void CreateCollider()
-        {
-            Object[] objects = Selection.objects;
-
-            for ( int i = 0 ; i < objects.Length ; i++ )
-            {
-                string path = AssetDatabase.GetAssetPath( objects[ i ] );
-
-                string name = Path.GetDirectoryName( path ) + "\\" + Path.GetFileNameWithoutExtension( path );
-                name += "Collider.prefab";
-
-                GameObject gameObject = new GameObject();
-                gameObject.layer = 8;
-
-                PrefabUtility.SaveAsPrefabAsset( gameObject , name );
-
-                GameObject.DestroyImmediate( gameObject );
-            }
-        }
+//         [MenuItem( "XAssets/CreateCollider" )]
+//         static void CreateCollider()
+//         {
+//             Object[] objects = Selection.objects;
+// 
+//             for ( int i = 0 ; i < objects.Length ; i++ )
+//             {
+//                 string path = AssetDatabase.GetAssetPath( objects[ i ] );
+// 
+//                 string name = Path.GetDirectoryName( path ) + "\\" + Path.GetFileNameWithoutExtension( path );
+//                 name += "Collider.prefab";
+// 
+//                 GameObject gameObject = new GameObject();
+//                 gameObject.layer = 8;
+// 
+//                 PrefabUtility.SaveAsPrefabAsset( gameObject , name );
+// 
+//                 GameObject.DestroyImmediate( gameObject );
+//             }
+//         }
 
         [MenuItem( "XAssets/Run" )]
         static void Run()
