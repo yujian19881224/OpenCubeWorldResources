@@ -82,6 +82,7 @@ namespace X
 
         public const string ModsPath = "Mods/";
         public const string CommonPath = "Common/";
+        public const string SharesPath = "Shares/";
         public const string GamesPath = "Games/";
         public const string ConfigPath = "Config/";
         public const string TexturesPath = "Textures/";

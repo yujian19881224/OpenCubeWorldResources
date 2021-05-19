@@ -24,17 +24,27 @@ namespace X
             return path;
         }
 
+        
         [MenuItem( "Assets/Build AssetBundles" )]
         static void BuildAllAssetBundles()
         {
             string path = "Assets";
             UnityEngine.Object[] objects = Selection.GetFiltered( typeof( UnityEngine.Object ) , SelectionMode.Assets );
 
+            if ( objects.Length == 0 )
+            {
+                return;
+            }
+
+            DirectoryInfo pathInfo = new DirectoryInfo( AssetDatabase.GetAssetPath( objects[ 0 ] ) );
+            string[] dir = Path.GetDirectoryName( AssetDatabase.GetAssetPath( objects[ 0 ] ) ).Replace( "\\" , "/" ).Split( '/' );
+            string name1 = dir[ dir.Length - 1 ];
+
             AssetSetting assetSetting = Resources.Load<AssetSetting>( "AssetSetting" );
 
-            List<AssetBundleBuild> builds = new List<AssetBundleBuild>();
+            List<AssetBundleBuild> builds = GetSharesBuilds();
             AssetBundleBuild build = new AssetBundleBuild();
-            build.assetBundleName = "assets" + Utility.AssetExtension;
+            build.assetBundleName = name1 + Utility.AssetExtension;
             build.assetNames = new string[ objects.Length ];
             build.addressableNames = new string[ objects.Length ];
 
@@ -55,10 +65,54 @@ namespace X
 
             builds.Add( build );
 
-            BuildPipeline.BuildAssetBundles( Path.GetDirectoryName( path ) , builds.ToArray() , 
+            BuildPipeline.BuildAssetBundles( "Temp" , builds.ToArray() , 
                 BuildAssetBundleOptions.None , assetSetting.buildTarget );
 
+            FileInfo fi = new FileInfo( "Temp/" + name1 + Utility.AssetExtension );
+            fi.MoveTo( Path.GetDirectoryName( path ) + "/" + name1 + Utility.AssetExtension );
+
             Resources.UnloadAsset( assetSetting );
+        }
+
+
+        static List<AssetBundleBuild> GetSharesBuilds()
+        {
+            List<string> pathList = new List<string>();
+
+            pathList.Add( "Assets/Bitgem/Cube_World/_Materials/cube_mat_black.mat" );
+            pathList.Add( "Assets/Bitgem/Cube_World/_Materials/cube_mat_green.mat" );
+            pathList.Add( "Assets/Bitgem/Cube_World/_Materials/cube_mat_grey.mat" );
+            pathList.Add( "Assets/Bitgem/Cube_World/_Materials/cube_mat_orange.mat" );
+            pathList.Add( "Assets/Bitgem/Cube_World/_Materials/cube_mat_pink.mat" );
+            pathList.Add( "Assets/Bitgem/Cube_World/_Materials/cube_mat_white.mat" );
+            pathList.Add( "Assets/Bitgem/Cube_World/_Materials/cubeworld_mat.mat" );
+            pathList.Add( "Assets/Bitgem/Cube_World/_Materials/grass_texture.mat" );
+            pathList.Add( "Assets/Bitgem/Cube_World/_Materials/URP_Multicolor_Material/URP_multicolor_mat.mat" );
+
+            AssetSetting assetSetting = Resources.Load<AssetSetting>( "AssetSetting" );
+
+            List<AssetBundleBuild> builds = new List<AssetBundleBuild>();
+            AssetBundleBuild build = new AssetBundleBuild();
+            build.assetBundleName = "Cube_World" + Utility.AssetExtension;
+            build.assetNames = new string[ pathList.Count ];
+            build.addressableNames = new string[ pathList.Count ];
+
+            for ( int i = 0 ; i < pathList.Count ; i++ )
+            {
+                string path = pathList[ i ];
+
+                if ( !string.IsNullOrEmpty( path ) && File.Exists( path ) )
+                {
+                    string name = Path.GetFileNameWithoutExtension( path );
+
+                    build.assetNames[ i ] = path;
+                    build.addressableNames[ i ] = name;
+                }
+            }
+
+            builds.Add( build );
+
+            return builds;
         }
 
         [MenuItem( "Assets/Build Single AssetBundles" )]
@@ -68,6 +122,7 @@ namespace X
             UnityEngine.Object[] objects = Selection.GetFiltered( typeof( UnityEngine.Object ) , SelectionMode.Assets );
 
             AssetSetting assetSetting = Resources.Load<AssetSetting>( "AssetSetting" );
+
 
             for ( int i = 0 ; i < objects.Length ; i++ )
             {
@@ -82,7 +137,7 @@ namespace X
 
                 if ( !string.IsNullOrEmpty( path ) && File.Exists( path ) )
                 {
-                    List<AssetBundleBuild> builds = new List<AssetBundleBuild>();
+                    List<AssetBundleBuild> builds = GetSharesBuilds();
                     AssetBundleBuild build = new AssetBundleBuild();
 
                     string name = Path.GetFileNameWithoutExtension( path );
@@ -100,6 +155,7 @@ namespace X
                     fi.MoveTo( Path.GetDirectoryName( path ) + "/" + name + Utility.AssetExtension );
                 }
             }
+
 
             Resources.UnloadAsset( assetSetting );
         }
