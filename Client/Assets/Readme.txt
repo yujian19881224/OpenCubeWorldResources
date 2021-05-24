@@ -6,3 +6,5 @@
 2.右键Build Single AB.
 3.编辑Commom/Config/Objects.xlsx
 4.运行标题栏XAssets/ConvertConfig,CopyMods
+
+sdsfs
