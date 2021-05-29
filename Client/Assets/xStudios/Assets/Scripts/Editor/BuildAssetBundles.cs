@@ -7,6 +7,19 @@ namespace X
 {
     public class BuildAssetBundles
     {
+
+        public static void ClearTemp()
+        {
+            string tempPath = "Temp/assets";
+
+            if ( Directory.Exists( tempPath ) )
+            {
+                Directory.Delete( tempPath , true );
+            }
+
+            Directory.CreateDirectory( tempPath );
+        }
+
         public static string GetSelectedPathOrFallback()
         {
             string path = "Assets";
@@ -28,6 +41,14 @@ namespace X
         [MenuItem( "Assets/Build AssetBundles" )]
         static void BuildAllAssetBundles()
         {
+            try
+            {
+                ClearTemp();
+            }
+            catch ( System.Exception )
+            {
+            }
+
             string path = "Assets";
             UnityEngine.Object[] objects = Selection.GetFiltered( typeof( UnityEngine.Object ) , SelectionMode.Assets );
 
@@ -68,8 +89,15 @@ namespace X
             BuildPipeline.BuildAssetBundles( "Temp" , builds.ToArray() , 
                 BuildAssetBundleOptions.None , assetSetting.buildTarget );
 
+            string filePath = Path.GetDirectoryName( path ) + "/" + name1 + Utility.AssetExtension;
+
+            if ( File.Exists( filePath ) )
+            {
+                File.Delete( filePath );
+            }
+
             FileInfo fi = new FileInfo( "Temp/" + name1 + Utility.AssetExtension );
-            fi.MoveTo( Path.GetDirectoryName( path ) + "/" + name1 + Utility.AssetExtension );
+            fi.MoveTo( filePath );
 
             Resources.UnloadAsset( assetSetting );
         }
@@ -118,6 +146,14 @@ namespace X
         [MenuItem( "Assets/Build Single AssetBundles" )]
         static void BuildSingleAssetBundles()
         {
+            try
+            {
+                ClearTemp();
+            }
+            catch ( System.Exception )
+            {
+            }
+
             string path = "Assets";
             UnityEngine.Object[] objects = Selection.GetFiltered( typeof( UnityEngine.Object ) , SelectionMode.Assets );
 
@@ -151,8 +187,15 @@ namespace X
                     BuildPipeline.BuildAssetBundles( "Temp" , builds.ToArray() ,
                         BuildAssetBundleOptions.None , assetSetting.buildTarget );
 
+                    string filePath = Path.GetDirectoryName( path ) + "/" + name + Utility.AssetExtension;
+
+                    if ( File.Exists( filePath ) )
+                    {
+                        File.Delete( filePath );
+                    }
+
                     FileInfo fi = new FileInfo( "Temp/" + path );
-                    fi.MoveTo( Path.GetDirectoryName( path ) + "/" + name + Utility.AssetExtension );
+                    fi.MoveTo( filePath );
                 }
             }
 
