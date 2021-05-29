@@ -11,3 +11,4 @@ Client/Assembly-CSharp-Editor.csproj
 Client/Assembly-CSharp.csproj
 Client/obj/
 
+*.unity3d
